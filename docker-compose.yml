@@ -1,0 +1,46 @@
+version: '3'
+services:
+  backend:
+    build: .
+    hostname: backend
+    environment:
+      TZ: Asia/Tokyo
+      DATABASE_USER: user
+      DATABASE_PASS: pass
+      DATABASE_HOST: db-development
+      DATABASE_PORT: 3306
+    volumes:
+      - .:/go/src/github.com/bb3104/gqlgen_gorm_sample
+    ports:
+      - '8080:8080'
+    tty: true
+    stdin_open: true
+    command: "go run server.go"
+    networks:
+      - gqlgen_gorm_sample
+  db-development:
+    image: bitnami/mysql:5.7
+    environment:
+      ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      MYSQL_DATABASE: gqlgen_gorm_sample_development
+      TZ: Asia/Tokyo
+    ports:
+      - '13306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - gqlgen_gorm_sample-db-development-data:/bitnami/mysql/data
+      - ./mysql/custom.cnf:/opt/bitnami/mysql/conf/my_custom.cnf:ro
+    networks:
+      - gqlgen_gorm_sample
+volumes:
+  gqlgen_gorm_sample-db-development-data:
+    driver: local
+
+networks:
+  gqlgen_gorm_sample:
+    external:
+      name: gqlgen_gorm_sample_network
+
