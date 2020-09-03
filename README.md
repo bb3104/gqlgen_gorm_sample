@@ -1,6 +1,6 @@
 # gqlgen_gorm_sample
 
-# create tables
+## create tables and init data
 ```
 go run lib/init.go
 ```
