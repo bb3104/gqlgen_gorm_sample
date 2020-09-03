@@ -5,7 +5,7 @@
 go run lib/init.go
 ```
 
-## Get Users data
+## Graphql Query Get Users data
 http://localhost:8080/playground
 
 ```
